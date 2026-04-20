@@ -44,9 +44,9 @@ end
 
 W = hadamard(M); % Walsh-Hadamard for orthogonal pilots
 
-ber_ls = zeros(num_snr, 1);
-ber_mmse = zeros(num_snr, 1);
-ber_dnn = zeros(num_snr, 1);
+ser_ls = zeros(num_snr, 1);
+ser_mmse = zeros(num_snr, 1);
+ser_dnn = zeros(num_snr, 1);
 
 % vectorized RIS Grid
 alpha_grid = repmat((0:N_x-1)', N_y, 1);
@@ -202,22 +202,22 @@ for si = 1:num_snr
         err_dnn = err_dnn + sum(pred_bits(it, :)' ~= Y_true_bits(it, :)');
     end
     
-    % calculate final BER
+    % calculate final ser
     total_bits = num_iter * 128;
-    ber_ls(si) = err_ls / total_bits;
-    ber_mmse(si) = err_mmse / total_bits;
-    ber_dnn(si) = err_dnn / total_bits;
+    ser_ls(si) = err_ls / total_bits;
+    ser_mmse(si) = err_mmse / total_bits;
+    ser_dnn(si) = err_dnn / total_bits;
     
-    fprintf('SNR = %2ddB | LS: %.4f | MMSE: %.4f | DNN: %.4f\n', snr_db, ber_ls(si), ber_mmse(si), ber_dnn(si));
+    fprintf('SNR = %2ddB | LS: %.4f | MMSE: %.4f | DNN: %.4f\n', snr_db, ser_ls(si), ser_mmse(si), ser_dnn(si));
 end
 
 %% pllotting final results
-figure('Name', 'Part B Task 4: Final BER vs SNR');
-semilogy(SNR_vec, ber_ls, 'r-o', 'LineWidth', 2, 'DisplayName', 'LS Estimator'); hold on;
-semilogy(SNR_vec, ber_mmse, 'b-s', 'LineWidth', 2, 'DisplayName', 'MMSE Estimator');
-semilogy(SNR_vec, ber_dnn, 'k-^', 'LineWidth', 2, 'DisplayName', 'Deep Learning (DNN)');
-grid on; xlabel('SNR (dB)'); ylabel('Bit Error Rate (BER)');
-title('RIS-Assisted MU-MISO: BER vs SNR Comparison');
+figure('Name', 'Part B Task 4: Final ser vs SNR');
+semilogy(SNR_vec, ser_ls, 'r-o', 'LineWidth', 2, 'DisplayName', 'LS Estimator'); hold on;
+semilogy(SNR_vec, ser_mmse, 'b-s', 'LineWidth', 2, 'DisplayName', 'MMSE Estimator');
+semilogy(SNR_vec, ser_dnn, 'k-^', 'LineWidth', 2, 'DisplayName', 'Deep Learning (DNN)');
+grid on; xlabel('SNR (dB)'); ylabel('Bit Error Rate (ser)');
+title('RIS-Assisted MU-MISO: ser vs SNR Comparison');
 legend('Location', 'southwest'); ylim([1e-4 1]);
 
 fprintf('\n=== Assignment Part B Completely Finished! ===\n');
